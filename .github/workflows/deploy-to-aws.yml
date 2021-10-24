@@ -1,0 +1,70 @@
+name: Deploy to AWS
+
+on:
+  push:
+    branches:
+      - develop
+  workflow_dispatch:
+    inputs:
+      env:
+        description: Environment
+        required: true
+        default: dev
+
+env:
+  AWS_REGION: eu-west-1
+  NODE_VERSION: 16.x
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash
+
+    env:
+      TF_ENVS_DIRECTORY: ./envs/${{ github.event.inputs.env }}
+      TF_WORKING_DIRECTORY: ./terraform
+      TF_PLAN_FILENAME: terraform-plan
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Test
+        run: npm run test -- --passWithNoTests
+
+      - name: Serverless package
+        run: npm run package ${{ github.event.inputs.env }}
+
+      - name: Terraform init
+        run: terraform init -no-color -backend-config=${{ env.TF_ENVS_DIRECTORY }}/backend.tfvars
+        working-directory: ${{ env.TF_WORKING_DIRECTORY }}
+
+      - name: Terraform plan
+        run: terraform plan -no-color -out=./${{ env.TF_PLAN_FILENAME }} -var-file=${{ env.TF_ENVS_DIRECTORY }}/variables.tfvars
+        working-directory: ${{ env.TF_WORKING_DIRECTORY }}
+
+      - name: Terraform apply
+        run: terraform apply -no-color ./${{ env.TF_PLAN_FILENAME }}
+        working-directory: ${{ env.TF_WORKING_DIRECTORY }}
