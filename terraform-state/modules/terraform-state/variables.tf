@@ -9,5 +9,5 @@ variable "env" {
 
 variable "project" {
   description = "Projet name"
-  type = string
+  type        = string
 }

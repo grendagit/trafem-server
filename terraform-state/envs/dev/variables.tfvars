@@ -1,3 +1,3 @@
-region = "eu-central-1"
-env    = "dev"
+region  = "eu-central-1"
+env     = "dev"
 project = "trafem"

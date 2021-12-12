@@ -1,9 +1,14 @@
 import type { AWS } from '@serverless/typescript'
 
-import hello from '@components/hello'
+import {
+  userAuthenticationCreateAuthChallenge,
+  userAuthenticationVerifyAuthChallengeResponse,
+  userAuthenticationDefineAuthChallenge,
+  userAuthenticationPreSignUp,
+} from '@components/user-authentication'
 
 const serverlessConfiguration: AWS = {
-  service: 'server',
+  service: 'trafem',
   frameworkVersion: '2',
   package: {
     individually: true,
@@ -34,8 +39,12 @@ const serverlessConfiguration: AWS = {
     lambdaHashingVersion: '20201221',
     stage: "${opt:stage, 'dev'}",
   },
-  // import the function via paths
-  functions: { hello },
+  functions: {
+    userAuthenticationCreateAuthChallenge,
+    userAuthenticationVerifyAuthChallengeResponse,
+    userAuthenticationDefineAuthChallenge,
+    userAuthenticationPreSignUp,
+  },
 }
 
 module.exports = serverlessConfiguration

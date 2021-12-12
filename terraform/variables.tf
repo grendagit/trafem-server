@@ -1,6 +1,6 @@
 variable "region" {
   description = "AWS region"
-  type        = string
+  type = string
 }
 
 variable "env" {
@@ -8,6 +8,12 @@ variable "env" {
 }
 
 variable "project" {
-  description = "Projet name"
+  description = "Project name"
   type = string
+}
+
+variable "sls_path" {
+  description = "Path to .serverless directory"
+  type = string
+  default = "../.serverless"
 }
