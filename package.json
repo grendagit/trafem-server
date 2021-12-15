@@ -18,6 +18,10 @@
     "@middy/http-json-body-parser": "^2.5.3",
     "@middy/validator": "^2.5.3",
     "axios": "^0.24.0",
+    "class-validator": "^0.13.2",
+    "reflect-metadata": "^0.1.13",
+    "typeorm": "^0.2.41",
+    "typeorm-aurora-data-api-driver": "^2.3.4",
     "winston": "^3.3.3"
   },
   "devDependencies": {

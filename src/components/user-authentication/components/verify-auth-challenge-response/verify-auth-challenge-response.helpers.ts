@@ -13,7 +13,7 @@ export function verifyChallengeAnswer(
   const challengeAnswer = event.request.challengeAnswer
 
   logger.info({
-    message: 'Started veryfing challenge answer',
+    message: 'Started verifyng challenge answer',
     data: {
       challengeAnswer,
       expectedAnswer,

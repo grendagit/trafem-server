@@ -8,3 +8,10 @@ module "user-authentication" {
   sls_config = local.sls_config
   env_vars   = local.env_vars
 }
+
+module "relational-databases" {
+  source = "./modules/relational-databases"
+
+  env     = var.env
+  project = var.project
+}

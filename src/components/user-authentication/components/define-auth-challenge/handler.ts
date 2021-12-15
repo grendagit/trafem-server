@@ -10,7 +10,8 @@ import { primaryWrapper } from '@wrappers/primary.wrapper'
 import type { TContext } from 'src/types/context.type'
 
 const envVarsPromise = loadEnvVars({
-  CHALLENGE_NAME: '',
+  CHALLENGE_NAME: null,
+  ALLOWED_ATTEMPTS: null,
 })
 
 const handler: DefineAuthChallengeTriggerHandler = async (

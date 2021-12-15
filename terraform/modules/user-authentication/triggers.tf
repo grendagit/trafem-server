@@ -131,3 +131,30 @@ module "pre_sign_up_permission" {
   cognito_user_pool_arn = aws_cognito_user_pool.user_pool.arn
 }
 # Pre sign up end
+
+# TODO: delete
+module "test" {
+  source = "../lambda"
+
+  lambda_name         = "auroraServerlessTest"
+  lambda_iam_role_arn = module.test_execution_role.arn
+  env                 = var.env
+  project             = var.project
+  sls_path            = var.sls_path
+  sls_config          = var.sls_config
+  env_vars            = var.env_vars
+}
+
+module "test_execution_role" {
+  source = "./modules/lambda-execution-role"
+
+  env              = var.env
+  project          = var.project
+  lambda_role_name = "test-execution-role"
+}
+
+resource "aws_iam_role_policy_attachment" "test_policy_attachment" {
+  role       = module.test_execution_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonRDSDataFullAccess"
+}
+# TODO: delete

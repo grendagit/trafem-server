@@ -18,3 +18,6 @@ terraform.tfstate.backup
 
 # Mac files/directories
 .DS_Store
+
+# TODO: delete
+aurora-serverless/

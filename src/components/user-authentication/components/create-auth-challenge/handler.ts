@@ -18,8 +18,15 @@ const handler: CreateAuthChallengeTriggerHandler = async (
   event,
   ctx: TContext
 ) => {
-  const session = event.request.session
+  const { logger } = ctx
 
+  logger.info({
+    message: 'Started creating a unique challenge',
+    data: {
+      event,
+    },
+  })
+  const session = event.request.session
   let secretLoginCode: string
   if (!session.length) {
     /**
