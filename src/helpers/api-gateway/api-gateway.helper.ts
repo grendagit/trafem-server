@@ -1,11 +1,5 @@
 import type { TContext } from 'src/types/context.type'
-import type { Generic } from 'src/types/generic.type'
-
-type TResponse = {
-  body: any
-  statusCode?: number
-  headers?: Generic
-}
+import type { TCORSConfig, TResponse } from './api-gateway.types'
 
 const defaultHeaders = {
   'Content-Type': 'application/json',
@@ -32,11 +26,6 @@ export const formatJSONResponse = (
       ...headers,
     },
   }
-}
-
-type TCORSConfig = {
-  allowedHeaders: string
-  allowedOrigin: string
 }
 
 export function getCORSHeaders(origin, method = '*', ctx: TContext) {
