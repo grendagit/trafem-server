@@ -1,160 +1,128 @@
+
+# Common begin
+module "execution_role" {
+  source = "../common/lambda-execution-roles/basic"
+
+  for_each = local.lambda_role_names
+
+  env              = var.env
+  project          = var.project
+  lambda_role_name = each.value
+}
+# Common end
+
 # Create auth challenge stuff begin
 module "create_auth_challenge" {
-  source = "../lambda"
+  source = "../common/lambda"
 
   lambda_name         = "userAuthenticationCreateAuthChallenge"
-  lambda_iam_role_arn = module.create_auth_challenge_execution_role.arn
+  lambda_iam_role_arn = module.execution_role[local.lambda_names[0]].arn
   env                 = var.env
   project             = var.project
   sls_path            = var.sls_path
   sls_config          = var.sls_config
   env_vars            = var.env_vars
 }
-
-module "create_auth_challenge_execution_role" {
-  source = "./modules/lambda-execution-role"
-
-  env              = var.env
-  project          = var.project
-  lambda_role_name = "create-auth-challenge-lambda-execution-role"
-
-}
-
 module "create_auth_challenge_permission" {
   source = "./modules/lambda-permission"
 
-  lambda_name           = module.create_auth_challenge.function_name
-  cognito_user_pool_arn = aws_cognito_user_pool.user_pool.arn
+  lambda_name   = module.create_auth_challenge.function_name
+  user_pool_arn = aws_cognito_user_pool.user_pool.arn
+
+  depends_on = [
+    module.create_auth_challenge
+  ]
 }
 
+# -> SES permissions begin
 data "aws_iam_policy_document" "create_auth_challenge_policy_document" {
   statement {
     actions   = ["ses:SendEmail", "ses:SendRawEmail"]
     resources = ["*"]
   }
 }
-
 resource "aws_iam_policy" "create_auth_challenge_policy" {
   name   = "${var.project}-create-auth-challenge-lambda-policy-${var.env}"
   policy = data.aws_iam_policy_document.create_auth_challenge_policy_document.json
 }
-
 resource "aws_iam_role_policy_attachment" "create_auth_challenge_policy_attachment" {
-  role       = module.create_auth_challenge_execution_role.name
+  role       = module.execution_role[local.lambda_names[0]].name
   policy_arn = aws_iam_policy.create_auth_challenge_policy.arn
 }
+# -> SES permissions end
 # Create auth challenge stuff end
 
 # Define auth challenge stuff begin
 module "define_auth_challenge" {
-  source = "../lambda"
+  source = "../common/lambda"
 
   lambda_name         = "userAuthenticationDefineAuthChallenge"
-  lambda_iam_role_arn = module.define_auth_challenge_execution_role.arn
+  lambda_iam_role_arn = module.execution_role[local.lambda_names[1]].arn
   env                 = var.env
   project             = var.project
   sls_path            = var.sls_path
   sls_config          = var.sls_config
   env_vars            = var.env_vars
 }
-
-module "define_auth_challenge_execution_role" {
-  source = "./modules/lambda-execution-role"
-
-  env              = var.env
-  project          = var.project
-  lambda_role_name = "define-auth-challenge-lambda-execution-role"
-}
-
 module "define_auth_challenge_permission" {
   source = "./modules/lambda-permission"
 
-  lambda_name           = module.define_auth_challenge.function_name
-  cognito_user_pool_arn = aws_cognito_user_pool.user_pool.arn
+  lambda_name   = module.define_auth_challenge.function_name
+  user_pool_arn = aws_cognito_user_pool.user_pool.arn
+
+  depends_on = [
+    module.define_auth_challenge
+  ]
 }
 # Define auth challenge stuff end
 
 # Verify auth challenge stuff begin
 module "verify_auth_challenge_response" {
-  source = "../lambda"
+  source = "../common/lambda"
 
   lambda_name         = "userAuthenticationVerifyAuthChallengeResponse"
-  lambda_iam_role_arn = module.verify_auth_challenge_response_execution_role.arn
+  lambda_iam_role_arn = module.execution_role[local.lambda_names[2]].arn
   env                 = var.env
   project             = var.project
   sls_path            = var.sls_path
   sls_config          = var.sls_config
   env_vars            = var.env_vars
 }
-
-module "verify_auth_challenge_response_execution_role" {
-  source = "./modules/lambda-execution-role"
-
-  env              = var.env
-  project          = var.project
-  lambda_role_name = "verify-auth-challenge-response-lambda-execution-role"
-}
-
 module "verify_auth_challenge_response_permission" {
   source = "./modules/lambda-permission"
 
-  lambda_name           = module.verify_auth_challenge_response.function_name
-  cognito_user_pool_arn = aws_cognito_user_pool.user_pool.arn
+  lambda_name   = module.verify_auth_challenge_response.function_name
+  user_pool_arn = aws_cognito_user_pool.user_pool.arn
+
+  depends_on = [
+    module.verify_auth_challenge_response
+  ]
 }
 # Verify auth challenge stuff end
 
 # Pre sign up stuff begin
 module "pre_sign_up" {
-  source = "../lambda"
+  source = "../common/lambda"
 
   lambda_name         = "userAuthenticationPreSignUp"
-  lambda_iam_role_arn = module.pre_sign_up_execution_role.arn
+  lambda_iam_role_arn = module.execution_role[local.lambda_names[3]].arn
   env                 = var.env
   project             = var.project
   sls_path            = var.sls_path
   sls_config          = var.sls_config
   env_vars            = var.env_vars
 }
-
-module "pre_sign_up_execution_role" {
-  source = "./modules/lambda-execution-role"
-
-  env              = var.env
-  project          = var.project
-  lambda_role_name = "pre-sign-up-lambda-execution-role"
-}
-
 module "pre_sign_up_permission" {
   source = "./modules/lambda-permission"
 
-  lambda_name           = module.pre_sign_up.function_name
-  cognito_user_pool_arn = aws_cognito_user_pool.user_pool.arn
+  lambda_name   = module.pre_sign_up.function_name
+  user_pool_arn = aws_cognito_user_pool.user_pool.arn
+
+  depends_on = [
+    module.pre_sign_up
+  ]
 }
 # Pre sign up end
 
-# TODO: delete
-module "test" {
-  source = "../lambda"
 
-  lambda_name         = "auroraServerlessTest"
-  lambda_iam_role_arn = module.test_execution_role.arn
-  env                 = var.env
-  project             = var.project
-  sls_path            = var.sls_path
-  sls_config          = var.sls_config
-  env_vars            = var.env_vars
-}
 
-module "test_execution_role" {
-  source = "./modules/lambda-execution-role"
-
-  env              = var.env
-  project          = var.project
-  lambda_role_name = "test-execution-role"
-}
-
-resource "aws_iam_role_policy_attachment" "test_policy_attachment" {
-  role       = module.test_execution_role.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonRDSDataFullAccess"
-}
-# TODO: delete

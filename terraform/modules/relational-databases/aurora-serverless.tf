@@ -48,14 +48,14 @@ resource "aws_secretsmanager_secret_version" "credentials" {
 EOF
 }
 
-resource "null_resource" "scripts" {
-  depends_on = [aws_rds_cluster.cluster]
+# resource "null_resource" "scripts" {
+#   depends_on = [aws_rds_cluster.cluster]
 
-  triggers = {
-    scripts = sha1(file("${path.module}/scripts.sql"))
-  }
+#   triggers = {
+#     scripts = sha1(file("${path.module}/scripts.sql"))
+#   }
 
-  provisioner "local-exec" {
-    command = "aws rds-data execute-statement --database ${aws_rds_cluster.cluster.database_name} --resource-arn ${aws_rds_cluster.cluster.arn} --secret-arn ${aws_secretsmanager_secret.credentials.arn} --sql ${"\"$(< ${path.module}/scripts.sql)\""}"
-  }
-}
+#   provisioner "local-exec" {
+#     command = "aws rds-data execute-statement --database ${aws_rds_cluster.cluster.database_name} --resource-arn ${aws_rds_cluster.cluster.arn} --secret-arn ${aws_secretsmanager_secret.credentials.arn} --sql ${"\"$(< ${path.module}/scripts/create-scripts.sql)\""}"
+#   }
+# }

@@ -1,1 +1,1 @@
-export { formatJSONResponse } from './api-gateway.helper'
+export { formatJSONResponse, getCORSHeaders } from './api-gateway.helper'

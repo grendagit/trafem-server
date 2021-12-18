@@ -92,7 +92,7 @@ resource "aws_cognito_user_pool" "user_pool" {
 }
 
 resource "aws_cognito_user_pool_client" "user_pool_client" {
-  name = "${var.project}-user-pool-client"
+  name = "${var.project}-user-pool-client-${var.env}"
 
   enable_token_revocation = true
   explicit_auth_flows = [

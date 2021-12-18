@@ -6,7 +6,7 @@ import {
   userAuthenticationDefineAuthChallenge,
   userAuthenticationPreSignUp,
 } from '@components/user-authentication'
-import { auroraServerlessTest } from '@components/aurora-serverless'
+import { eventManagementGetEvents } from '@components/event-management'
 
 const serverlessConfiguration: AWS = {
   service: 'trafem',
@@ -45,7 +45,7 @@ const serverlessConfiguration: AWS = {
     userAuthenticationVerifyAuthChallengeResponse,
     userAuthenticationDefineAuthChallenge,
     userAuthenticationPreSignUp,
-    auroraServerlessTest,
+    eventManagementGetEvents,
   },
 }
 
