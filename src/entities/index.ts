@@ -1,2 +1,2 @@
 export { EndUser } from './EndUser'
-export { Event } from './Event'
+export { Event, EEventType } from './Event'

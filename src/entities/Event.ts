@@ -8,10 +8,12 @@ import {
   ManyToOne,
   JoinColumn,
   Check,
+  CreateDateColumn,
 } from 'typeorm'
-import { Min, Max } from 'class-validator'
+import { Min, Max, MaxLength } from 'class-validator'
+import { ColumnNumericTransformer } from './helpers/numeric-transformer'
 
-enum EEventType {
+export enum EEventType {
   TRIP = 'trip',
   PARTY = 'party',
 }
@@ -23,7 +25,7 @@ export class Event extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number
 
-  @Column('int')
+  @Column({ type: 'int' })
   end_user_id: number
 
   @ManyToOne(() => EndUser, user => user.events, {
@@ -40,13 +42,43 @@ export class Event extends BaseEntity {
   })
   event_type: EEventType
 
-  @Column({ type: 'numeric', precision: 2 })
+  @Column({
+    type: 'numeric',
+    precision: 6,
+    scale: 4,
+    transformer: new ColumnNumericTransformer(),
+  })
   @Min(-180)
   @Max(180)
   longitude: number
 
-  @Column({ type: 'numeric', precision: 2 })
+  @Column({
+    type: 'numeric',
+    precision: 6,
+    scale: 4,
+    transformer: new ColumnNumericTransformer(),
+  })
   @Min(-90)
   @Max(90)
   latitude: number
+
+  @Column({ type: 'varchar', length: 64 })
+  @MaxLength(64)
+  title: string
+
+  @Column({ type: 'text' })
+  description: string
+
+  @Column({ type: 'int', nullable: true })
+  participation_price_min: number
+  @Column({ type: 'int' })
+  participation_price_max: number
+
+  @Column({ type: 'timestamp', nullable: true })
+  duration_from: Date
+  @Column({ type: 'timestamp' })
+  duration_to: Date
+
+  @CreateDateColumn()
+  created_at: Date
 }
