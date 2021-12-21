@@ -2,3 +2,4 @@ export { default as userAuthenticationCreateAuthChallenge } from './components/c
 export { default as userAuthenticationVerifyAuthChallengeResponse } from './components/verify-auth-challenge-response'
 export { default as userAuthenticationDefineAuthChallenge } from './components/define-auth-challenge'
 export { default as userAuthenticationPreSignUp } from './components/pre-sign-up'
+export { default as userAuthenticationPostConfirmation } from './components/post-confirmation'

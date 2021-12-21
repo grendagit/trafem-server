@@ -1,4 +1,4 @@
-import { EndUser, Event } from 'src/entities'
+import { EndUser, EndUserProfile, Event } from 'src/entities'
 import type { TContext } from 'src/types/context.type'
 
 import { createConnection } from 'typeorm'
@@ -24,7 +24,7 @@ export async function getConnection(ctx: TContext): Promise<Connection> {
       secretArn: SECRET_ARN,
       resourceArn: RESOURCE_ARN,
       region: REGION,
-      entities: [EndUser, Event],
+      entities: [EndUser, EndUserProfile, Event],
     })
   } catch (error) {
     logger.error({

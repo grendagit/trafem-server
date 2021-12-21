@@ -1,4 +1,5 @@
 import { EndUser } from './EndUser'
+import { ColumnNumericTransformer } from './helpers/numeric-transformer.helper'
 
 import {
   Entity,
@@ -11,7 +12,6 @@ import {
   CreateDateColumn,
 } from 'typeorm'
 import { Min, Max, MaxLength } from 'class-validator'
-import { ColumnNumericTransformer } from './helpers/numeric-transformer'
 
 export enum EEventType {
   TRIP = 'trip',

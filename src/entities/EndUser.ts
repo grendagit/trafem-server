@@ -16,10 +16,10 @@ export class EndUser extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number
 
-  @Column('text')
+  @Column({ type: 'text' })
   @IsEmail(undefined, { message: 'E-mail is invalid' })
   email: string
 
-  @OneToMany(() => Event, event => event.end_user)
+  @OneToMany(() => Event, event => event.end_user, { cascade: true })
   events: Event[]
 }

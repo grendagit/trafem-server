@@ -1,3 +1,11 @@
+
+module "relational_databases" {
+  source = "./modules/relational-databases"
+
+  env     = var.env
+  project = var.project
+}
+
 module "user_authentication" {
   source = "./modules/user-authentication"
 
@@ -6,14 +14,14 @@ module "user_authentication" {
   project    = var.project
   sls_path   = local.sls_path
   sls_config = local.sls_config
-  env_vars   = local.env_vars
-}
+  env_vars = merge(local.env_vars, {
+    SECRET_ARN   = module.relational_databases.aurora_serverless_secret_arn
+    RESOURCE_ARN = module.relational_databases.aurora_serverless_cluster_arn
+  })
 
-module "relational_databases" {
-  source = "./modules/relational-databases"
-
-  env     = var.env
-  project = var.project
+  depends_on = [
+    module.relational_databases
+  ]
 }
 
 module "api" {

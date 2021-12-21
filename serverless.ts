@@ -5,6 +5,7 @@ import {
   userAuthenticationVerifyAuthChallengeResponse,
   userAuthenticationDefineAuthChallenge,
   userAuthenticationPreSignUp,
+  userAuthenticationPostConfirmation,
 } from '@components/user-authentication'
 import { eventManagementGetEvents } from '@components/event-management'
 
@@ -45,6 +46,7 @@ const serverlessConfiguration: AWS = {
     userAuthenticationVerifyAuthChallengeResponse,
     userAuthenticationDefineAuthChallenge,
     userAuthenticationPreSignUp,
+    userAuthenticationPostConfirmation,
     eventManagementGetEvents,
   },
 }

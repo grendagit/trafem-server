@@ -5,7 +5,8 @@ locals {
     "create-auth-challenge",
     "define-auth-challenge",
     "verify-auth-challenge-response",
-    "pre-sign-up"
+    "pre-sign-up",
+    "post-confirmation"
   ]
   lambda_role_names = { for lambda_name in local.lambda_names : lambda_name => "${lambda_name}-lambda-execution-role" }
 }

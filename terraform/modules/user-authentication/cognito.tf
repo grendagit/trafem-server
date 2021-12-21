@@ -32,7 +32,7 @@ resource "aws_cognito_user_pool" "user_pool" {
     define_auth_challenge          = module.define_auth_challenge.arn
     verify_auth_challenge_response = module.verify_auth_challenge_response.arn
     pre_sign_up                    = module.pre_sign_up.arn
-
+    post_confirmation              = module.post_confirmation.arn
   }
 
   schema {

@@ -4,6 +4,11 @@ VALUES
   ('test@test.com');
 
 INSERT INTO
+  end_user_profile (end_user_id, given_name, family_name)
+VALUES
+  (1, 'imię', 'nazwisko');
+
+INSERT INTO
   event (
     end_user_id,
     event_type,

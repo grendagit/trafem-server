@@ -39,7 +39,7 @@ resource "aws_iam_role_policy_attachment" "get_events_policy_attachment" {
 }
 
 # -> RDS permissions begin
-resource "aws_iam_role_policy_attachment" "test_policy_attachment" {
+resource "aws_iam_role_policy_attachment" "get_events_rds_data_full_access_policy_attachment" {
   role       = module.execution_role[local.lambda_names[0]].name
   policy_arn = "arn:aws:iam::aws:policy/AmazonRDSDataFullAccess"
 }

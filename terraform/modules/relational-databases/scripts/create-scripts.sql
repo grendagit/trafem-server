@@ -3,6 +3,12 @@ CREATE TABLE IF NOT EXISTS end_user (
   email text CONSTRAINT email_col_len CHECK (length(email) <= 2048)
 );
 
+CREATE TABLE IF NOT EXISTS end_user_profile (
+  end_user_id int PRIMARY KEY REFERENCES end_user (id) ON DELETE CASCADE,
+  given_name text NOT NULL,
+  family_name text NOT NULL
+);
+
 CREATE TYPE t_event_type AS ENUM ('trip', 'party');
 
 CREATE TABLE IF NOT EXISTS event (

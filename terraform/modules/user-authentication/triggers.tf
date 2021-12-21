@@ -124,5 +124,36 @@ module "pre_sign_up_permission" {
 }
 # Pre sign up end
 
+# Post confirmation stuff begin
+module "post_confirmation" {
+  source = "../common/lambda"
+
+  lambda_name         = "userAuthenticationPostConfirmation"
+  lambda_iam_role_arn = module.execution_role[local.lambda_names[4]].arn
+  env                 = var.env
+  project             = var.project
+  sls_path            = var.sls_path
+  sls_config          = var.sls_config
+  env_vars            = var.env_vars
+}
+module "post_confirmation_permission" {
+  source = "./modules/lambda-permission"
+
+  lambda_name   = module.post_confirmation.function_name
+  user_pool_arn = aws_cognito_user_pool.user_pool.arn
+
+  depends_on = [
+    module.post_confirmation
+  ]
+}
+
+# -> RDS permissions begin
+resource "aws_iam_role_policy_attachment" "post_confirmation_rds_data_full_access_policy_attachment" {
+  role       = module.execution_role[local.lambda_names[4]].name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonRDSDataFullAccess"
+}
+# -> RDS permissions end
+# Post confirmation end
+
 
 
