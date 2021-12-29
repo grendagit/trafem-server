@@ -5,7 +5,7 @@ export async function sendEmailWithSecretLoginCode(
   toEmail: string,
   secretLoginCode: string,
   ctx: TContext
-): Promise<void> {
+) {
   const { logger } = ctx
 
   logger.info({

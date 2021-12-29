@@ -2,7 +2,7 @@ import { SSM, SecretsManager } from 'aws-sdk'
 
 const ssm = new SSM()
 
-export async function getParameter(value: string): Promise<string> {
+export async function getParameter(value: string) {
   const parameterName = value.replace('parameter:', '')
 
   try {
@@ -19,7 +19,7 @@ export async function getParameter(value: string): Promise<string> {
 
 const secretsManager = new SecretsManager()
 
-export async function getSecretValue(value: string): Promise<string> {
+export async function getSecretValue(value: string) {
   const secretName = value.replace('secret:', '')
 
   try {

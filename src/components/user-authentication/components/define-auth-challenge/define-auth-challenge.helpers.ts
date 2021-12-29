@@ -5,7 +5,7 @@ import type { TContext } from 'src/types/context.type'
 export function defineNext(
   event: DefineAuthChallengeTriggerEvent,
   ctx: TContext
-): never | void {
+) {
   const {
     logger,
     envVars: { CHALLENGE_NAME, ALLOWED_ATTEMPTS },
@@ -45,9 +45,7 @@ export function defineNext(
   }
 }
 
-export function verifyUserExistence(
-  event: DefineAuthChallengeTriggerEvent
-): never | void {
+export function verifyUserExistence(event: DefineAuthChallengeTriggerEvent) {
   if (event.request.userNotFound) {
     event.response.issueTokens = false
     event.response.failAuthentication = true

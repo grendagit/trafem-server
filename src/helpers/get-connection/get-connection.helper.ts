@@ -7,7 +7,7 @@ import 'reflect-metadata'
 
 let cachedConnection: Connection
 
-export async function getConnection(ctx: TContext): Promise<Connection> {
+export async function getConnection(ctx: TContext) {
   const {
     logger,
     envVars: { SECRET_ARN, RESOURCE_ARN, REGION },

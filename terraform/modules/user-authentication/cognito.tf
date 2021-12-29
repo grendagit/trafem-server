@@ -52,7 +52,7 @@ resource "aws_cognito_user_pool" "user_pool" {
     attribute_data_type      = "String"
     required                 = true
     developer_only_attribute = false
-    mutable                  = false
+    mutable                  = true
     string_attribute_constraints {
       max_length = "2048"
       min_length = "0"
@@ -64,7 +64,31 @@ resource "aws_cognito_user_pool" "user_pool" {
     attribute_data_type      = "String"
     required                 = true
     developer_only_attribute = false
-    mutable                  = false
+    mutable                  = true
+    string_attribute_constraints {
+      max_length = "2048"
+      min_length = "0"
+    }
+  }
+
+  schema {
+    name                     = "about_me"
+    attribute_data_type      = "String"
+    required                 = false
+    developer_only_attribute = false
+    mutable                  = true
+    string_attribute_constraints {
+      max_length = "2048"
+      min_length = "0"
+    }
+  }
+
+  schema {
+    name                     = "id"
+    attribute_data_type      = "String"
+    required                 = false
+    developer_only_attribute = false
+    mutable                  = true
     string_attribute_constraints {
       max_length = "2048"
       min_length = "0"
@@ -110,4 +134,14 @@ resource "aws_cognito_user_pool_domain" "user_pool_domain" {
   domain = local.domain
 
   user_pool_id = aws_cognito_user_pool.user_pool.id
+}
+
+resource "aws_secretsmanager_secret" "user_pool_id" {
+  name = "${var.project}-user-pool-id-${var.env}"
+}
+
+resource "aws_secretsmanager_secret_version" "user_pool_id" {
+  secret_id = aws_secretsmanager_secret.user_pool_id.id
+
+  secret_string = aws_cognito_user_pool.user_pool.id
 }

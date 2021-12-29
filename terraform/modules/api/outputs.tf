@@ -17,6 +17,20 @@ output "users_resource_path" {
   value = aws_api_gateway_resource.users.path
 }
 
+output "user_id_resource_id" {
+  value = aws_api_gateway_resource.user_id.id
+}
+output "user_id_resource_path" {
+  value = aws_api_gateway_resource.user_id.path
+}
+
+output "user_events_resource_id" {
+  value = aws_api_gateway_resource.user_events.id
+}
+output "user_events_resource_path" {
+  value = aws_api_gateway_resource.user_events.path
+}
+
 output "events_resource_id" {
   value = aws_api_gateway_resource.events.id
 }

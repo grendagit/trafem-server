@@ -1,7 +1,7 @@
 import type { APIGatewayProxyHandler } from 'aws-lambda'
 import middy from '@middy/core'
 
-import { manageGetEvents } from '@components/event-management/event-management.controllers'
+import { manageGetUserEvents } from '@components/user-management/user-management.controller'
 import { loadEnvVars } from '@helpers/load-env-vars'
 import { getConnection } from '@helpers/get-connection'
 import { formatJSONResponse, getCORSHeaders } from '@helpers/api-gateway'
@@ -18,7 +18,7 @@ const envVarsPromise = loadEnvVars({
 const handler: APIGatewayProxyHandler = async (event, ctx: TContext) => {
   const { logger } = ctx
 
-  const { queryStringParameters } = event
+  const { pathParameters } = event
 
   logger.info({
     message: 'Event',
@@ -29,10 +29,13 @@ const handler: APIGatewayProxyHandler = async (event, ctx: TContext) => {
 
   const connection = await getConnection(ctx)
 
-  const events = await manageGetEvents(queryStringParameters, connection, ctx)
+  const userEvents = await manageGetUserEvents(pathParameters!, connection, ctx)
 
   return formatJSONResponse(
-    { body: events, headers: getCORSHeaders(event.headers.origin, 'get', ctx) },
+    {
+      body: userEvents,
+      headers: getCORSHeaders(event.headers.origin, 'get', ctx),
+    },
     ctx
   )
 }

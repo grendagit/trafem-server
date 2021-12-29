@@ -5,7 +5,7 @@ import type { TContext } from 'src/types/context.type'
 export function verifyChallengeAnswer(
   event: VerifyAuthChallengeResponseTriggerEvent,
   ctx: TContext
-): VerifyAuthChallengeResponseTriggerEvent {
+) {
   const { logger } = ctx
 
   const expectedAnswer =

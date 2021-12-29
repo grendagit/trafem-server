@@ -8,6 +8,7 @@ import {
   userAuthenticationPostConfirmation,
 } from '@components/user-authentication'
 import { eventManagementGetEvents } from '@components/event-management'
+import { userManagementGetUserEvents } from '@components/user-management'
 
 const serverlessConfiguration: AWS = {
   service: 'trafem',
@@ -48,6 +49,7 @@ const serverlessConfiguration: AWS = {
     userAuthenticationPreSignUp,
     userAuthenticationPostConfirmation,
     eventManagementGetEvents,
+    userManagementGetUserEvents,
   },
 }
 

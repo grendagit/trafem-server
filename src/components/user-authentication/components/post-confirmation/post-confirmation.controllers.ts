@@ -9,7 +9,7 @@ export async function setUpEndUser(
   event: PostConfirmationTriggerEvent,
   connection: Connection,
   ctx: TContext
-): Promise<void> {
+) {
   const { logger } = ctx
 
   const {
@@ -28,17 +28,11 @@ export async function setUpEndUser(
       connection,
       ctx
     )
-    const endUserProfile = await postConfirmationServices.createEndUserProfile(
-      endUser,
-      userAttributes,
-      connection,
-      ctx
-    )
+    await postConfirmationServices.setUpEndUserId(endUser, ctx)
     logger.info({
       message: 'Setting up end user has just ended successfuly',
       data: {
         endUser,
-        endUserProfile,
       },
     })
   } catch (error) {

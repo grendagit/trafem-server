@@ -20,6 +20,20 @@ resource "aws_api_gateway_resource" "users" {
   rest_api_id = aws_api_gateway_rest_api.rest_api.id
 }
 
+# /user-management/users/{userId}
+resource "aws_api_gateway_resource" "user_id" {
+  parent_id   = aws_api_gateway_resource.users.id
+  path_part   = "{userId}"
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+}
+
+# /user-management/users/{userId}/events
+resource "aws_api_gateway_resource" "user_events" {
+  parent_id   = aws_api_gateway_resource.user_id.id
+  path_part   = "events"
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+}
+
 # /event-management
 resource "aws_api_gateway_resource" "event_management" {
   parent_id   = aws_api_gateway_rest_api.rest_api.root_resource_id
@@ -36,7 +50,7 @@ resource "aws_api_gateway_resource" "events" {
 
 # /event-management/events/{eventId}
 resource "aws_api_gateway_resource" "event_id" {
-  parent_id   = aws_api_gateway_resource.event_management.id
+  parent_id   = aws_api_gateway_resource.events.id
   path_part   = "{eventId}"
   rest_api_id = aws_api_gateway_rest_api.rest_api.id
 }

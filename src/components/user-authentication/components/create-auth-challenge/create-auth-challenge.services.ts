@@ -1,6 +1,4 @@
 import { SES } from 'aws-sdk'
-import type { AWSError } from 'aws-sdk'
-import type { PromiseResult } from 'aws-sdk/lib/request'
 
 import type { TContext } from 'src/types/context.type'
 
@@ -10,7 +8,7 @@ export async function sendEmail(
   toEmail: string,
   secretLoginCode: string,
   ctx: TContext
-): Promise<PromiseResult<SES.SendEmailResponse, AWSError>> {
+) {
   const {
     envVars: { SES_FROM_EMAIL },
   } = ctx

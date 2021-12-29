@@ -11,6 +11,7 @@ const envVarsPromise = loadEnvVars({
   SECRET_ARN: '',
   RESOURCE_ARN: '',
   REGION: '',
+  USER_POOL_ID: '',
 })
 
 const handler: PostConfirmationTriggerHandler = async (

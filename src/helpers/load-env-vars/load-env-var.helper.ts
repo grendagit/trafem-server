@@ -4,7 +4,7 @@ import type { Generic } from 'src/types/generic.type'
 
 let envVars: Generic = {}
 
-export async function loadEnvVars(defaultValues: Generic): Promise<void> {
+export async function loadEnvVars(defaultValues: Generic) {
   try {
     const values = Object.entries(defaultValues).map(
       async ([key, defaultValue]) => {
@@ -34,11 +34,11 @@ function extendEnvVars(
   envVars: Generic,
   value: string,
   [key, defaultValue]: [string, string | number]
-): void {
+) {
   envVars[key] = value || defaultValue
 }
 
-export function getEnvVars(): Generic {
+export function getEnvVars() {
   if (!envVars) {
     throw new Error('Environment variables are not loaded')
   }

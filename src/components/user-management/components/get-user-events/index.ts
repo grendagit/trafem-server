@@ -1,12 +1,12 @@
 import { handlerResolver } from '@helpers/handler-resolver.ts'
 
 export default {
-  name: 'trafem-post-confirmation-${self:provider.stage}',
+  name: 'trafem-get-user-events-${self:provider.stage}',
   handler: `${handlerResolver(__dirname)}/handler.execute`,
   environment: {
+    CORS_CONFIG: '',
     SECRET_ARN: '',
     RESOURCE_ARN: '',
     REGION: '',
-    USER_POOL_ID: '',
   },
 }

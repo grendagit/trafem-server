@@ -1,6 +1,6 @@
 import { getParameter, getSecretValue } from './load-env-vars.services'
 
-export async function getValue(key: string): Promise<string> {
+export async function getValue(key: string) {
   let value = process.env[key] || ''
 
   if (value.startsWith('parameter:')) {

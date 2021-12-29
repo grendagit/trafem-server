@@ -134,7 +134,9 @@ module "post_confirmation" {
   project             = var.project
   sls_path            = var.sls_path
   sls_config          = var.sls_config
-  env_vars            = var.env_vars
+  env_vars = merge(var.env_vars, {
+    USER_POOL_ID = "secret:${var.project}-user-pool-id-${var.env}"
+  })
 }
 module "post_confirmation_permission" {
   source = "./modules/lambda-permission"
@@ -147,6 +149,25 @@ module "post_confirmation_permission" {
   ]
 }
 
+data "aws_iam_policy_document" "post_confirmation_policy_document" {
+  statement {
+    actions   = ["secretsmanager:GetSecretValue"]
+    resources = [aws_secretsmanager_secret.user_pool_id.arn]
+  }
+  statement {
+    actions   = ["cognito-idp:AdminUpdateUserAttributes"]
+    resources = [aws_cognito_user_pool.user_pool.arn]
+  }
+}
+resource "aws_iam_policy" "post_confirmation_policy" {
+  name   = "${var.project}-post-confirmation-lambda-policy-${var.env}"
+  policy = data.aws_iam_policy_document.post_confirmation_policy_document.json
+}
+resource "aws_iam_role_policy_attachment" "post_confirmation_policy_attachment" {
+  role       = module.execution_role[local.lambda_names[4]].name
+  policy_arn = aws_iam_policy.post_confirmation_policy.arn
+}
+
 # -> RDS permissions begin
 resource "aws_iam_role_policy_attachment" "post_confirmation_rds_data_full_access_policy_attachment" {
   role       = module.execution_role[local.lambda_names[4]].name
@@ -154,6 +175,3 @@ resource "aws_iam_role_policy_attachment" "post_confirmation_rds_data_full_acces
 }
 # -> RDS permissions end
 # Post confirmation end
-
-
-
