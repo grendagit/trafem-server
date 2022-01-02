@@ -8,6 +8,7 @@ export const logger = winston.createLogger({
   transports: [
     new winston.transports.Console({
       format: winston.format.json(),
+      silent: process.argv.indexOf('--silent') !== -1,
     }),
   ],
 })
